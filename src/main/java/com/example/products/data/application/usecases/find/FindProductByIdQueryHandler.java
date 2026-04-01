@@ -1,6 +1,8 @@
 package com.example.products.data.application.usecases.find;
 
+import com.example.products.data.application.assemblers.ProductAssembler;
 import com.example.products.data.application.dto.ProductDto;
+import com.example.products.data.domain.product.Product;
 import com.example.products.data.domain.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +15,7 @@ public class FindProductByIdQueryHandler {
 
     @Transactional
     public FindProductByIdQueryResponse handle(FindProductByIdQuery query){
-        ProductDto productDto = productRepository.findById(UUID.fromString(query.id()));
-        return new FindProductByIdQueryResponse(productDto);
+        Product product = productRepository.findById(UUID.fromString(query.id()));
+        return new FindProductByIdQueryResponse(ProductAssembler.toDto(product));
     }
 }

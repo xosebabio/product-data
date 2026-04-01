@@ -15,7 +15,7 @@ public class CreateProductCommandHandler {
     @Transactional
     CreateProductCommandResponse handle(CreateProductCommand command){
         Product product = ProductFactory.createProduct(command.name(), command.description(), command.price());
-        ProductDto productCreated = productRepository.save(ProductAssembler.toDto(product));
-        return new CreateProductCommandResponse(productCreated);
+        Product productCreated = productRepository.save(product);
+        return new CreateProductCommandResponse(ProductAssembler.toDto(productCreated));
     }
 }

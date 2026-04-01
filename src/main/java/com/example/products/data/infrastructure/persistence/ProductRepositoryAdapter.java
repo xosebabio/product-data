@@ -1,7 +1,5 @@
 package com.example.products.data.infrastructure.persistence;
 
-import com.example.products.data.application.assemblers.ProductAssembler;
-import com.example.products.data.application.dto.ProductDto;
 import com.example.products.data.domain.product.Product;
 import com.example.products.data.domain.repository.ProductRepository;
 import com.example.products.data.infrastructure.mappers.ProductMapper;
@@ -20,22 +18,22 @@ public class ProductRepositoryAdapter implements ProductRepository{
     private final MongoProductCrudRepository productCrudRepository;
 
     @Override
-    public ProductDto findById(UUID id) {
+    public Product findById(UUID id) {
         ProductMongodb productMongodb = productCrudRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
-        return mapper.toDto(productMongodb);
+        return mapper.toDomain(productMongodb);
     }
 
     @Override
-    public List<ProductDto> findAll() {
+    public List<Product> findAll() {
         List<ProductMongodb> products = productCrudRepository.findAll();
-        return products.stream().map(mapper::toDto).toList();
+        return products.stream().map(mapper::toDomain).toList();
     }
 
     @Override
-    public ProductDto save(ProductDto product) {
+    public Product save(Product product) {
         log.info("Saving product {}", product);
         ProductMongodb productMongodb = productCrudRepository.save(mapper.toMongo(product));
-        return mapper.toDto(productMongodb);
+        return mapper.toDomain(productMongodb);
     }
 
     @Override
