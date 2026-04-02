@@ -44,12 +44,11 @@ public class ProductRepositoryAdapter implements ProductRepository{
     }
 
     @Override
-    public Product findByName(String name) {
+    public Optional<Product> findByName(String name) {
         Optional<ProductMongodb> opProduct = productCrudRepository.findByName(name);
-        if (opProduct.isPresent()){
-            return mapper.toDomain(opProduct.get());
-        } else {
-            throw new IllegalArgumentException("Product with name " + name + " not found");
+        if (opProduct.isEmpty()){
+            return Optional.empty();
         }
+        return opProduct.map(mapper::toDomain);
     }
 }

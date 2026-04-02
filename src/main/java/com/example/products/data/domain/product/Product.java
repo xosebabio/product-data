@@ -1,9 +1,11 @@
 package com.example.products.data.domain.product;
 
+import com.example.products.data.domain.product.valueobject.PriceSnapshot;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -12,6 +14,7 @@ public class Product {
     private UUID id;
     private String name;
     private Double price;
+    private List<PriceSnapshot> priceSnapshot;
     private String description;
     private LocalDateTime createAt;
     private LocalDateTime updatedAt;
@@ -28,15 +31,16 @@ public class Product {
         this.createAt = LocalDateTime.now();
     }
 
-    void changePrice(Double price){
+    public void addPriceSnapshot(Double price){
         if (price.isNaN() || price<=0){
             throw new IllegalArgumentException("Price must be a positive number");
         }
         this.price = price;
+        this.priceSnapshot.add(new PriceSnapshot(price, LocalDateTime.now()));
         this.updatedAt = LocalDateTime.now();
     }
 
-    void changeDescription(String description) {
+    public void changeDescription(String description) {
         if (description==null || description.isBlank()){
             throw new IllegalArgumentException("Description must not be null or blank");
         }
