@@ -1,6 +1,7 @@
 package com.example.products.data.application.usecases.find;
 
 import com.example.products.data.application.assemblers.ProductAssembler;
+import com.example.products.data.domain.exceptions.NoExistingProductException;
 import com.example.products.data.domain.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ public class FindProductByNameQueryHandler {
 
     @Transactional
     public FindProductByNameQueryResponse handle(FindProductByNameQuery query){
-        return new FindProductByNameQueryResponse(ProductAssembler.toDto(productRepository.findByName(query.name())));
+        return new FindProductByNameQueryResponse(ProductAssembler.toDto(productRepository.findByName(query.name())
+                .orElseThrow(()->new NoExistingProductException("Product not found"))));
     }
 }

@@ -15,6 +15,7 @@ public class ProductAssembler {
                 product.getId(),
                 product.getName(),
                 product.getPrice(),
+                product.getPriceSnapshot(),
                 product.getDescription(),
                 product.getCreateAt(),
                 product.getUpdatedAt()
@@ -29,6 +30,7 @@ public class ProductAssembler {
                 productDto.id(),
                 productDto.name(),
                 productDto.price(),
+                productDto.priceSnapshot(),
                 productDto.description(),
                 productDto.createAt(),
                 productDto.updatedAt()
