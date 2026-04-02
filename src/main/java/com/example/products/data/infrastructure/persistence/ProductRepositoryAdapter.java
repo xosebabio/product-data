@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -40,5 +41,15 @@ public class ProductRepositoryAdapter implements ProductRepository{
     public void deleteById(UUID id) {
         productCrudRepository.deleteById(id);
         log.info("Product with id {} deleted", id);
+    }
+
+    @Override
+    public Product findByName(String name) {
+        Optional<ProductMongodb> opProduct = productCrudRepository.findByName(name);
+        if (opProduct.isPresent()){
+            return mapper.toDomain(opProduct.get());
+        } else {
+            throw new IllegalArgumentException("Product with name " + name + " not found");
+        }
     }
 }
