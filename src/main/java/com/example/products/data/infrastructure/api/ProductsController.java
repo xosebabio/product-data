@@ -2,6 +2,7 @@ package com.example.products.data.infrastructure.api;
 
 import com.example.products.data.application.dto.ProductDto;
 import com.example.products.data.application.usecases.find.*;
+import com.example.products.data.domain.exceptions.NoExistingProductException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,8 +25,12 @@ public class ProductsController implements ProductsApi {
 
     @Override
     public ResponseEntity<ProductDto> findById(String id) {
-        FindProductByIdQueryResponse response = findByIdHandler.handle(new FindProductByIdQuery(id));
-        return ResponseEntity.ok(response.productDto());
+        try{
+            FindProductByIdQueryResponse response = findByIdHandler.handle(new FindProductByIdQuery(id));
+            return ResponseEntity.ok(response.productDto());
+        } catch (NoExistingProductException e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @Override
